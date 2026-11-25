@@ -1,0 +1,7 @@
+---
+- name: Harden and configure web servers
+  hosts: web
+  become: true
+  roles:
+    - baseline
+    - nginx
