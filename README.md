@@ -161,9 +161,6 @@ The state bucket is not deleted automatically (`force_destroy = false`). Remove 
 
 Terraform modules, remote state and environment isolation, GCP networking basics, Ansible roles/templates/handlers, idempotency, SSH and server hardening, Terraform-to-Ansible integration, CI for IaC.
 
-## Resume bullet
-
-*Built reusable Terraform modules with remote GCS state to provision isolated dev and prod environments on GCP; automated Nginx deployment and server hardening (SSH, fail2ban, unattended upgrades) with Ansible; added CI checks with GitHub Actions.*
 
 ## Possible improvements
 
