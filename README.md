@@ -1,6 +1,10 @@
+
 # GCP Terraform + Ansible Baseline (Dev / Prod)
 
 A beginner-friendly but production-style DevOps project:
+
+<img width="2720" height="1980" alt="gcp_terraform_ansible_architecture" src="https://github.com/user-attachments/assets/9ed1e3e2-21f4-4f67-97b4-ccd6c71ab7ae" />
+
 
 - **Terraform** provisions a VPC, firewall rules, and a Compute Engine VM on **Google Cloud**, for two isolated environments (**dev** and **prod**), using reusable modules and remote state in a GCS bucket.
 - **Ansible** configures the VM: **hardens SSH**, installs **fail2ban** and **automatic security updates**, and deploys **Nginx** with an environment-specific web page.
@@ -57,6 +61,7 @@ cd terraform/bootstrap
 terraform init
 terraform apply -var="project_id=YOUR_PROJECT_ID"
 ```
+<img width="1639" height="698" alt="Screenshot From 2026-11-25 12-18-54" src="https://github.com/user-attachments/assets/e6e9da69-7d7c-43b3-85d3-11d6ff5cd6f6" />
 
 ### 2. Edit the config files
 
@@ -75,6 +80,7 @@ terraform init -backend-config=envs/dev.backend.hcl -reconfigure
 terraform plan  -var-file=envs/dev.tfvars
 terraform apply -var-file=envs/dev.tfvars
 ```
+<img width="1660" height="707" alt="Screenshot From 2026-11-25 12-17-36" src="https://github.com/user-attachments/assets/26a3d25e-45c1-4191-a053-47a78176236d" />
 
 This creates the infrastructure and writes `ansible/inventory/dev/hosts.ini`.
 
@@ -86,6 +92,7 @@ ansible all -i inventory/dev/hosts.ini -m ping                        # test con
 ansible-playbook -i inventory/dev/hosts.ini site.yml --check --diff   # dry run
 ansible-playbook -i inventory/dev/hosts.ini site.yml                  # apply
 ```
+<img width="1663" height="736" alt="Screenshot From 2026-11-25 12-05-15" src="https://github.com/user-attachments/assets/c17b8d39-baf7-4a3c-91c1-3a5fcbd1360c" />
 
 Open the URL from `terraform output web_url` in your browser.
 
@@ -99,11 +106,14 @@ Run the playbook a second time. The recap should show `changed=0`.
 cd ../terraform
 terraform init -backend-config=envs/prod.backend.hcl -reconfigure
 terraform apply -var-file=envs/prod.tfvars
+```
+<img width="1660" height="707" alt="Screenshot From 2026-11-25 12-17-36" src="https://github.com/user-attachments/assets/2b3d5695-97ff-40e1-ae09-851961c3fbf3" />
 
+```
 cd ../ansible
 ansible-playbook -i inventory/prod/hosts.ini site.yml
 ```
-
+<img width="1649" height="723" alt="Screenshot From 2026-11-25 12-14-52" src="https://github.com/user-attachments/assets/82670f67-d311-49d5-8a6a-d74a2bb56478" />
 > Always run `terraform init -backend-config=... -reconfigure` when switching environments so you never apply to the wrong state.
 
 ## Verify the hardening
@@ -115,6 +125,12 @@ sudo systemctl status fail2ban
 sudo fail2ban-client status sshd
 cat /etc/apt/apt.conf.d/20auto-upgrades
 ```
+<img width="1852" height="723" alt="Screenshot From 2026-11-25 12-16-17" src="https://github.com/user-attachments/assets/9659892c-fce2-433d-b6d1-b4153b631284" />
+
+<img width="1852" height="723" alt="Screenshot From 2026-11-25 12-16-22" src="https://github.com/user-attachments/assets/4670a737-cabb-409e-82e9-8ebeac78f717" />
+
+<img width="1529" height="796" alt="Screenshot From 2026-11-25 12-38-24" src="https://github.com/user-attachments/assets/edbaf896-cf4f-479a-a8d9-3013ec68116d" />
+
 
 ## Clean up (avoid charges!)
 
